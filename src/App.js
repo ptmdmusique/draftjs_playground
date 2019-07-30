@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState, } from 'react';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import DraftJS from './DraftJS';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
+const styles = {
+  slide: {
+    background: '#FEA900',
+    minHeight: '100px', 
+    color: 'white',
+    fontSize: 50, 
+  },
+
+  slide_1: {
+    background: 'green',
+  },
+  slide_2: {
+    background: 'red',
+  },
+  slide_3: {
+    background: 'blue',
+  },
 }
 
-export default App;
+const MyComponent = () => {
+  const size = 4;
+  const [myList, setList] = useState(null);
+
+  useEffect(() => {
+    const temp = [];
+    for (let indx = 0; indx < size; indx++){
+      temp.push(<DraftJS index={indx} key={indx}/>)
+    }
+    setList(temp);
+  }, [])
+
+  return (
+    <div>
+      <AutoPlaySwipeableViews enableMouseEvents resistance>
+        <div style={{...styles.slide, ...styles.slide_1}}>slide n°1</div>
+        <div style={{...styles.slide, ...styles.slide_2}}>slide n°2</div>
+        <div style={{...styles.slide, ...styles.slide_3}}>slide n°3</div>
+      </AutoPlaySwipeableViews>
+      
+      {myList ? myList : null}
+    </div>
+  )
+};
+
+export default MyComponent;
